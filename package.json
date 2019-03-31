@@ -1,0 +1,29 @@
+{
+  "name": "addmin",
+  "version": "1.0.0",
+  "description": "Proyecto BackEnd para titulación SENA",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DevCamilo/ADDMIN-BackEnd.git"
+  },
+  "author": "Juan Camilo Reyes Romero",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DevCamilo/ADDMIN-BackEnd/issues"
+  },
+  "homepage": "https://github.com/DevCamilo/ADDMIN-BackEnd#readme",
+  "dependencies": {
+    "celebrate": "^9.0.1",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "jwt-simple": "^0.5.5",
+    "moment": "^2.23.0",
+    "mongoose": "^5.4.0",
+    "nodemon": "^1.18.9"
+  }
+}
