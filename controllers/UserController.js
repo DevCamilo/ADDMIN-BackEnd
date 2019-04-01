@@ -26,18 +26,21 @@ function createUser(req, res) {
 
 function login(req, res) {
     let query = req.body;
+    // Busca el email del usuario
     UserModel.find({ email: query.email }, (err, data) => {
         if (err) {
-            res.status(200).send({ status: false, message: 'Fallo al buscar el usuario' })
+            res.status(200).send({ status: false, message: 'Fallo al buscar el email' })
         } else if (data.length == 0) {
             res.status(200).send({ status: false, message: 'El usuario no existe' });
         } else {
+            // Busca la contraseña del usuario
             UserModel.find({ email: query.email, password: query.password }, (err2, data2) => {
                 if (err2) {
                     res.status(200).send({ status: false, message: 'Fallo al buscar la contraseña' });
                 } else if (data2.length == 0) {
                     res.status(200).send({ status: false, message: 'Contraseña incorrecta' });
                 } else {
+                    // Crea el token y regresa la info del usuario
                     res.status(200).send({ status: true, data: data2, token: token.createToken(data2[0]._id) });
                 }
             });
@@ -46,5 +49,6 @@ function login(req, res) {
 }
 
 module.exports = {
-    createUser
+    createUser,
+    login
 }

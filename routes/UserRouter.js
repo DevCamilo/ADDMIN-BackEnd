@@ -16,7 +16,16 @@ api.post('/create-user', celebrate({
         password: Joi.string().required()
     }).unknown()
 }), (err, req, res, next) => {
-    res.status(200).send({status: false, message: 'Faltan datos por enviar'});
+    res.status(200).send({ status: false, message: 'Faltan datos por enviar' });
 }, UserController.createUser);
+
+api.post('/login', celebrate({
+    body: Joi.object().keys({
+        email: Joi.string().required(),
+        password: Joi.string().required()
+    }).unknown()
+}), (err, req, res, next) => {
+    res.status(200).send({status: false, message: 'Faltan datos por enviar'});
+}, UserController.login);
 
 module.exports = api;
