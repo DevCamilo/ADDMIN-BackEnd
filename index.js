@@ -18,7 +18,7 @@ mongoose.connect(`mongodb://${DB.host}:${DB.port}/${DB.database}`, { useNewUrlPa
     if (err) {
         console.log('Error en la conexion');
     } else {
-        console.log('Conexion DB Exitosa')
+        console.log('Conexion DB Exitosa');
     }
 });
 // Parsea el body del request en archivos JSON
