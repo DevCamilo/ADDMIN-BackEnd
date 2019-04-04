@@ -24,6 +24,29 @@ function createUser(req, res) {
     });
 }
 
+function findAllUsers(req, res) {
+    UserModel.find({ status: true }, (err, data) => {
+        if (err) {
+            res.status(200).send({ status: false, message: 'Fallo al listar los usuarios' });
+        } else {
+            res.status(200).send({ status: true, data: data });
+        }
+    });
+}
+
+function findUserById(req, res) {
+    const query = req.query;
+    UserModel.findById(query.id, (err, data) => {
+        if (err) {
+            res.status(200).send({ status: false, message: 'Fallo al buscar el usuario' });
+        } else if(data == null) {
+            res.status(200).send({ status: false, message: 'El usuario no se encuentra dentro del sistema' });
+        } else {
+            res.status(200).send({ status: true, data: data });
+        }
+    });
+}
+
 function login(req, res) {
     let query = req.body;
     // Busca el email del usuario
@@ -50,5 +73,7 @@ function login(req, res) {
 
 module.exports = {
     createUser,
+    findUserById,
+    findAllUsers,
     login
 }

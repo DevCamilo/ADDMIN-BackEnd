@@ -7,6 +7,8 @@ const User = Schema({
     lastName: String,
     telephone: String,
     document: String,
+    tower: String,
+    apto: String,
     typeUser: Number,
     status: { type: Boolean, default: true },
     email: String,
