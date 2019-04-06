@@ -6,7 +6,6 @@ const User = Schema({
     name: String,
     lastName: String,
     telephone: String,
-    document: String,
     tower: String,
     apto: String,
     typeUser: Number,

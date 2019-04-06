@@ -6,12 +6,11 @@ const { celebrate, Joi } = require('celebrate');
 const express = require('express');
 const api = express.Router();
 
-api.post('/create-user', celebrate({
+api.post('/create-user', Auth.isAuth, celebrate({
     body: Joi.object().keys({
         name: Joi.string().required(),
         lastName: Joi.string().required(),
         telephone: Joi.string().required(),
-        document: Joi.string().required(),
         tower: Joi.string().required(),
         apto: Joi.string().required(),
         typeUser: Joi.number().integer().required(),
@@ -27,10 +26,18 @@ api.get('/user-id/:id?', celebrate({
         id: Joi.string().required()
     }).unknown()
 }), (err, req, res, next) => {
-    res.status(200).send({ status: false, message: 'Faltan datos por enviar' })
+    res.status(200).send({ status: false, message: 'Faltan datos por enviar' });
 }, UserController.findUserById);
 
 api.get('/user-all', Auth.isAuth, UserController.findAllUsers);
+
+api.get('/delete-user/:id?', Auth.isAuth, celebrate({
+    query: Joi.object({
+        id: Joi.string().required()
+    }).unknown()
+}), (err, req, res, next) => {
+    res.status(200).send({ status: false, message: 'Faltan datos por enviar' });
+},  UserController.deleteUser);
 
 api.post('/login', celebrate({
     body: Joi.object().keys({

@@ -39,10 +39,21 @@ function findUserById(req, res) {
     UserModel.findById(query.id, (err, data) => {
         if (err) {
             res.status(200).send({ status: false, message: 'Fallo al buscar el usuario' });
-        } else if(data == null) {
+        } else if (data == null) {
             res.status(200).send({ status: false, message: 'El usuario no se encuentra dentro del sistema' });
         } else {
             res.status(200).send({ status: true, data: data });
+        }
+    });
+}
+
+function deleteUser(req, res) {
+    const query = req.query;
+    UserModel.findByIdAndUpdate(query._id, { status: false }, (err, data) => {
+        if (err) {
+            res.status(200).send({ status: false, message: 'Error al eliminar el usuario' });
+        } else {
+            res.status(200).send({ status: true, message: 'Usuario eliminado exitosamente' });
         }
     });
 }
@@ -75,5 +86,6 @@ module.exports = {
     createUser,
     findUserById,
     findAllUsers,
+    deleteUser,
     login
 }
