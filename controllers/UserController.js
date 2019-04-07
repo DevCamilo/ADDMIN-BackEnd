@@ -1,6 +1,7 @@
 'use strict'
 
 const UserModel = require('../models/UserModel');
+const moment = require('moment');
 const token = require('../middlewares/Auth');
 
 function createUser(req, res) {
@@ -47,9 +48,24 @@ function findUserById(req, res) {
     });
 }
 
+function updateUser(req, res) {
+    let update = req.body;
+    update.updated_at = new Date(moment().toISOString());
+    UserModel.findByIdAndUpdate(update._id, update, (err, data) => {
+        if (err) {
+            res.status(200).send({ status: false, message: 'Fallo al actualizar el usuario' });
+        } else {
+            res.status(200).send({ status: true, message: 'Usuario actualizado exitosamente'});
+        }
+    });
+}
+
 function deleteUser(req, res) {
     const query = req.query;
-    UserModel.findByIdAndUpdate(query._id, { status: false }, (err, data) => {
+    UserModel.findByIdAndUpdate(query.id, {
+        status: false, 
+        updated_at: new Date(moment().toISOString())
+    }, (err, data) => {
         if (err) {
             res.status(200).send({ status: false, message: 'Error al eliminar el usuario' });
         } else {
@@ -86,6 +102,7 @@ module.exports = {
     createUser,
     findUserById,
     findAllUsers,
+    updateUser,
     deleteUser,
     login
 }

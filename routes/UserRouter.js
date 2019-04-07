@@ -31,6 +31,21 @@ api.get('/user-id/:id?', celebrate({
 
 api.get('/user-all', Auth.isAuth, UserController.findAllUsers);
 
+api.post('/update-user', Auth.isAuth, celebrate({
+    body: Joi.object().keys({
+        name: Joi.string().required(),
+        lastName: Joi.string().required(),
+        telephone: Joi.string().required(),
+        tower: Joi.string().required(),
+        apto: Joi.string().required(),
+        typeUser: Joi.number().integer().required(),
+        email: Joi.string().required(),
+        password: Joi.string().required()
+    }).unknown()
+}), (err, req, res, next) => {
+    res.status(200).send({ status: false, message: 'Faltan datos por enviar' });
+}, UserController.updateUser);
+
 api.get('/delete-user/:id?', Auth.isAuth, celebrate({
     query: Joi.object({
         id: Joi.string().required()
