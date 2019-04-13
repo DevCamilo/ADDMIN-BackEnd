@@ -14,11 +14,15 @@ api.post('/create-user', Auth.isAuth, celebrate({
         tower: Joi.string().required(),
         apto: Joi.string().required(),
         typeUser: Joi.number().integer().required(),
-        email: Joi.string().required(),
+        email: Joi.string().email().required(),
         password: Joi.string().required()
     }).unknown()
 }), (err, req, res, next) => {
-    res.status(200).send({ status: false, message: 'Faltan datos por enviar' });
+    if (err.details[0].path[0] == 'email') {
+        res.status(200).send({ status: false, message: 'El correo no es válido' });
+    } else {
+        res.status(200).send({ status: false, message: 'Faltan datos por enviar' });
+    }
 }, UserController.createUser);
 
 api.get('/user-id/:id?', celebrate({
@@ -39,11 +43,15 @@ api.post('/update-user', Auth.isAuth, celebrate({
         tower: Joi.string().required(),
         apto: Joi.string().required(),
         typeUser: Joi.number().integer().required(),
-        email: Joi.string().required(),
+        email: Joi.string().email().required(),
         password: Joi.string().required()
     }).unknown()
 }), (err, req, res, next) => {
-    res.status(200).send({ status: false, message: 'Faltan datos por enviar' });
+    if (err.details[0].path[0] == 'email') {
+        res.status(200).send({ status: false, message: 'El correo no es válido' });
+    } else {
+        res.status(200).send({ status: false, message: 'Faltan datos por enviar' });
+    }
 }, UserController.updateUser);
 
 api.get('/delete-user/:id?', Auth.isAuth, celebrate({
@@ -52,7 +60,7 @@ api.get('/delete-user/:id?', Auth.isAuth, celebrate({
     }).unknown()
 }), (err, req, res, next) => {
     res.status(200).send({ status: false, message: 'Faltan datos por enviar' });
-},  UserController.deleteUser);
+}, UserController.deleteUser);
 
 api.post('/login', celebrate({
     body: Joi.object().keys({
@@ -60,7 +68,7 @@ api.post('/login', celebrate({
         password: Joi.string().required()
     }).unknown()
 }), (err, req, res, next) => {
-    res.status(200).send({status: false, message: 'Faltan datos por enviar'});
+    res.status(200).send({ status: false, message: 'Faltan datos por enviar' });
 }, UserController.login);
 
 module.exports = api;

@@ -7,11 +7,11 @@ const token = require('../middlewares/Auth');
 function createUser(req, res) {
     const query = req.body;
     // Verifica que el el correo no exista
-    UserModel.find({ email: query.email }, (err, data1) => {
+    UserModel.find({ email: query.email, status: true }, (err, data1) => {
         if (data1.length > 0) {
-            res.status(200).send({ status: false, message: 'El email ya existe' });
+            res.status(200).send({ status: false, message: 'El correo ya existe' });
         } else if (err) {
-            res.status(200).send({ status: false, message: 'Fallo al corroborar el email' })
+            res.status(200).send({ status: false, message: 'Fallo al corroborar el correo' });
         } else {
             // Registra un nuevo usuario en el sistema
             UserModel.create(query, (err2, data2) => {
@@ -51,19 +51,29 @@ function findUserById(req, res) {
 function updateUser(req, res) {
     let update = req.body;
     update.updated_at = new Date(moment().toISOString());
+    // Verifica que el el correo no exista
+    /**UserModel.find({ email: update.email, status: true }, (err, data1) => {
+        if (data1.length > 0) {
+            res.status(200).send({ status: false, message: 'El correo ya existe' });
+        } else if (err) {
+            res.status(200).send({ status: false, message: 'Fallo al corroborar el correo' });
+        } else { */
+    // Actualizacion del usuario
     UserModel.findByIdAndUpdate(update._id, update, (err, data) => {
         if (err) {
             res.status(200).send({ status: false, message: 'Fallo al actualizar el usuario' });
         } else {
-            res.status(200).send({ status: true, message: 'Usuario actualizado exitosamente'});
+            res.status(200).send({ status: true, message: 'Usuario actualizado exitosamente' });
         }
     });
+    // }
+    // });
 }
 
 function deleteUser(req, res) {
     const query = req.query;
     UserModel.findByIdAndUpdate(query.id, {
-        status: false, 
+        status: false,
         updated_at: new Date(moment().toISOString())
     }, (err, data) => {
         if (err) {
@@ -79,7 +89,7 @@ function login(req, res) {
     // Busca el email del usuario
     UserModel.find({ email: query.email }, (err, data) => {
         if (err) {
-            res.status(200).send({ status: false, message: 'Fallo al buscar el email' })
+            res.status(200).send({ status: false, message: 'Fallo al buscar el email' });
         } else if (data.length == 0) {
             res.status(200).send({ status: false, message: 'El usuario no existe' });
         } else {
