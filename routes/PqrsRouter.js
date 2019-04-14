@@ -9,10 +9,10 @@ const api = express.Router();
 
 api.post('/create-pqrs', Auth.isAuth, celebrate({
     body: Joi.object().keys({
-        titel: Joi.string().required(),
+        title: Joi.string().required(),
         description: Joi.string().required(),
-        type: Joi.number().required(),
-        id_origin: Joi.number().required(),
+        type: Joi.string().required(),
+        id_origin: Joi.string().required(),
     }).unknown()
 }), (err, req, res, next) => {
     res.status(200).send({ status: false, message: 'Faltan datos por enviar' });
@@ -44,14 +44,16 @@ api.get('/list-pqrs-id-attendant', Auth.isAuth, celebrate({
     res.status(200).send({ status: false, message: 'Faltan datos por enviar' });
 }, PqrsController.findPqrsByIdAttendant);
 
+api.get('/group-pqrs', PqrsController.groupPqrsByType);
+
 api.post('/update-pqrs', Auth.isAuth, celebrate({
     body: Joi.object().keys({
         titel: Joi.string(),
         description: Joi.string(),
-        type: Joi.number(),
-        id_origin: Joi.number(),
+        type: Joi.string(),
+        id_origin: Joi.string(),
         response: Joi.string(),
-        id_attendant: Joi.number(),
+        id_attendant: Joi.string(),
     }).unknown()
 }), (err, req, res, next) => {
     res.status(200).send({ status: false, message: 'Faltan datos por enviar' });

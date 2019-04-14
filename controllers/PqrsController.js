@@ -1,6 +1,7 @@
 'use strict'
 const PqrsModel = require('../models/PqrsModel');
 const TypePqrsModel = require('../models/TypePqrsModel');
+const UserModel = require('../models/UserModel');
 const moment = require('moment');
 const mongoose = require('mongoose');
 
@@ -25,7 +26,7 @@ function findAllPqrs(req, res) {
     });
 }
 
-function findPqrsById(req, res){
+function findPqrsById(req, res) {
     const query = req.query;
     PqrsModel.findById(query.id, (err, data) => {
         if (err) {
@@ -54,6 +55,40 @@ function findPqrsByIdAttendant(req, res) {
             res.status(200).send({ status: false, message: 'Error al buscar las PQRS' });
         } else {
             res.status(200).send({ status: true, data: data });
+        }
+    });
+}
+
+function groupPqrsByType(req, res) {
+    PqrsModel.aggregate([
+        {
+            $sort: { created_at: -1 }
+        },
+        {
+            $group: {
+                _id: '$type',
+                info: { $push: "$$ROOT" },
+                users: { $push: '$id_origin' },
+                count: { $sum: 1 }
+            }
+        }
+    ]).exec((err, data) => {
+        if (err) {
+            res.status(200).send({ status: false, message: 'Error al agrupar las PQRS' });
+        } else {
+            TypePqrsModel.populate(data, { path: '_id' }, (err2, data2) => {
+                if (err2) {
+                    res.status(200).send({ status: false, message: 'Error al popular el tipo de PQRS' });
+                } else {
+                    UserModel.populate(data2, { path: 'users', select: 'name', select: ['name', 'lastName'] }, (err3, data3) => {
+                        if (err3) {
+                            res.status(200).send({ status: false, message: 'Error al popular los usuarios' });
+                        } else {
+                            res.status(200).send({ status: true, data: data3 });
+                        }
+                    })
+                }
+            })
         }
     });
 }
@@ -148,6 +183,7 @@ module.exports = {
     findPqrsById,
     findPqrsByIdOrigin,
     findPqrsByIdAttendant,
+    groupPqrsByType,
     updatePqrs,
     deletePqrs,
     createTypePqrs,
