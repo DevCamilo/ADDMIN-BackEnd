@@ -80,13 +80,14 @@ function groupPqrsByType(req, res) {
                 if (err2) {
                     res.status(200).send({ status: false, message: 'Error al popular el tipo de PQRS' });
                 } else {
-                    UserModel.populate(data2, { path: 'users', select: 'name', select: ['name', 'lastName'] }, (err3, data3) => {
-                        if (err3) {
-                            res.status(200).send({ status: false, message: 'Error al popular los usuarios' });
-                        } else {
-                            res.status(200).send({ status: true, data: data3 });
-                        }
-                    })
+                    UserModel.populate(data2, { path: 'users', select: ['name', 'lastName', 'tower', 'apto'] },
+                        (err3, data3) => {
+                            if (err3) {
+                                res.status(200).send({ status: false, message: 'Error al popular los usuarios' });
+                            } else {
+                                res.status(200).send({ status: true, data: data3 });
+                            }
+                        });
                 }
             })
         }
@@ -96,6 +97,7 @@ function groupPqrsByType(req, res) {
 function updatePqrs(req, res) {
     const update = req.body;
     update.updated_at = new Date(moment().toISOString());
+    update.checked = 'star_border';
     PqrsModel.findByIdAndUpdate(update._id, update, (err, data) => {
         if (err) {
             res.status(200).send({ status: false, message: 'Error al actualizar la PQRS' });
