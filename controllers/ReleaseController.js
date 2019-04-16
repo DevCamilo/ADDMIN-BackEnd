@@ -16,11 +16,17 @@ function createRelease(req, res) {
 }
 
 function listAllReleases(req, res) {
-    ReleaseModel.find({ status: true }).sort({ created_at: -1 }).populate('users', 'name').exec((err, data) => {
+    ReleaseModel.find({ status: true }, (err, data) => {
         if (err) {
             res.status(200).send({ status: false, message: 'Error al listar los comunicados' });
         } else {
-            res.status(200).send({ status: true, data: data });
+            ReleaseModel.populate(data, { path: 'sender', select: ['name', 'lastName'] }, (err2, data2) => {
+                if (err2) {
+                    res.status(200).send({ status: false, message: 'Error al popular el usuario' });
+                } else {
+                    res.status(200).send({ status: true, data: data2 });
+                }
+            })
         }
     });
 }
@@ -47,7 +53,7 @@ function listReleaseBySender(req, res) {
     });
 }
 
-function updateRelease(req, res){
+function updateRelease(req, res) {
     const query = req.body;
     query.updated_at = new Date(moment().toISOString());
     ReleaseModel.findByIdAndUpdate(query._id, query, (err, data) => {
@@ -59,9 +65,9 @@ function updateRelease(req, res){
     });
 }
 
-function deleteRelease(req, res){
+function deleteRelease(req, res) {
     const query = req.query;
-    ReleaseModel.findByIdAndUpdate(query.id, { status: false }, (err, data) =>{
+    ReleaseModel.findByIdAndUpdate(query.id, { status: false }, (err, data) => {
         if (err) {
             res.status(200).send({ status: false, message: 'Error al eliminar el comunicado' });
         } else {
