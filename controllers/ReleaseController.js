@@ -16,17 +16,11 @@ function createRelease(req, res) {
 }
 
 function listAllReleases(req, res) {
-    ReleaseModel.find({ status: true }, (err, data) => {
+    ReleaseModel.find({ status: true }).sort({ created_at: -1 }).populate('sender', ['name', 'lastName']).exec((err, data) => {
         if (err) {
             res.status(200).send({ status: false, message: 'Error al listar los comunicados' });
         } else {
-            ReleaseModel.populate(data, { path: 'sender', select: ['name', 'lastName'] }, (err2, data2) => {
-                if (err2) {
-                    res.status(200).send({ status: false, message: 'Error al popular el usuario' });
-                } else {
-                    res.status(200).send({ status: true, data: data2 });
-                }
-            })
+            res.status(200).send({ status: true, data: data });
         }
     });
 }

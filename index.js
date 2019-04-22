@@ -12,6 +12,7 @@ const bodyParser = require('body-parser');
 const UserRoutes = require('./routes/UserRouter');
 const PqrsRoutes = require('./routes/PqrsRouter');
 const ReleaseRoutes = require('./routes/ReleaseRouter');
+const StatsRoutes = require('./routes/StatsRouter');
 // Conexión base de datos
 // En mongoLab
 // mongoose.connect(`mongodb://${DB.user}:${DB.password}@${DB.host}:${DB.port}/${DB.database}`, { useNewUrlParser: true }, (err, con) => {
@@ -31,6 +32,7 @@ app.use(cors());
 app.use(UserRoutes);
 app.use(PqrsRoutes);
 app.use(ReleaseRoutes);
+app.use(StatsRoutes);
 // Se inicia el servidor
 app.listen(3000, () => {
     console.log("Server Corriendo");
