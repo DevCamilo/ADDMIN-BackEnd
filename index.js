@@ -5,7 +5,7 @@ const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors');
 // Parametros base de datos
-const DB = require('./DB');
+const DB = require('./config/DB');
 // Parsear el body a tipo JSON
 const bodyParser = require('body-parser');
 // Rutas API
@@ -13,6 +13,7 @@ const UserRoutes = require('./routes/UserRouter');
 const PqrsRoutes = require('./routes/PqrsRouter');
 const ReleaseRoutes = require('./routes/ReleaseRouter');
 const StatsRoutes = require('./routes/StatsRouter');
+const EmailRoutes = require('./routes/EmailRouter');
 // Conexión base de datos
 // En mongoLab
 // mongoose.connect(`mongodb://${DB.user}:${DB.password}@${DB.host}:${DB.port}/${DB.database}`, { useNewUrlParser: true }, (err, con) => {
@@ -33,6 +34,7 @@ app.use(UserRoutes);
 app.use(PqrsRoutes);
 app.use(ReleaseRoutes);
 app.use(StatsRoutes);
+app.use(EmailRoutes);
 // Se inicia el servidor
 app.listen(3000, () => {
     console.log("Server Corriendo");
