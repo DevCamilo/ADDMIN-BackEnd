@@ -69,7 +69,12 @@ function groupPqrsByType(req, res) {
                 _id: '$type',
                 info: { $push: "$$ROOT" },
                 users: { $push: '$id_origin' },
-                count: { $sum: 1 }
+                count: {
+                    $sum:
+                    {
+                        $cond: { if: { $eq: ['$checked', 'star'] }, then: 1, else: 0 }
+                    }
+                }
             }
         }
     ]).exec((err, data) => {
