@@ -71,4 +71,14 @@ api.post('/login', celebrate({
     res.status(200).send({ status: false, message: 'Faltan datos por enviar' });
 }, UserController.login);
 
+api.post('/change-password', Auth.isAuth, celebrate({
+    body: Joi.object().keys({
+        _id: Joi.string().required(),
+        password: Joi.string().required(),
+        newPassword: Joi.string().required()
+    }).unknown()
+}), (err, req, res, next) => {
+    res.status(200).send({ status: false, message: 'Faltan datos por enviar' });
+}, UserController.changePassword);
+
 module.exports = api;

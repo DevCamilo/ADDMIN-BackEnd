@@ -108,11 +108,33 @@ function login(req, res) {
     });
 }
 
+function changePassword(req, res){
+    const query = req.body;
+    UserModel.findById(query._id, (err, data) => {
+        if (err) {
+            res.status(200).send({ status: false, message: 'Error al buscar el usuario' });
+        } else {
+            if (data.password == query.password) {
+                UserModel.findOneAndUpdate(query._id, { password: query.newPassword }, (err2, data2) => {
+                    if (err2) {
+                        res.status(200).send({ status: false, message: 'Error al actualizar la contraseña' });
+                    } else {
+                        res.status(200).send({ status: true, message: 'Contraseña actualizada exitosamente' });
+                    }
+                });
+            } else {
+                res.status(200).send({ status: false, message: 'La contraseña es incorrecta'});
+            }
+        }
+    })
+}
+
 module.exports = {
     createUser,
     findUserById,
     findAllUsers,
     updateUser,
     deleteUser,
-    login
+    login,
+    changePassword
 }
