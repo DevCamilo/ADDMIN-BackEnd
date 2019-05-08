@@ -25,6 +25,7 @@
     "moment": "^2.23.0",
     "mongoose": "^5.4.0",
     "nodemailer": "^6.1.1",
-    "nodemon": "^1.18.9"
+    "nodemon": "^1.18.9",
+    "npm": "^6.9.0"
   }
 }

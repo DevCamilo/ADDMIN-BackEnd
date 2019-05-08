@@ -60,7 +60,7 @@ function countPqrs(req, res) {
         if (err) {
             res.status(200).send({ status: false, message: 'Error al contar las PQRS' });
         } else {
-            TypePqrs.populate(data, { path: '_id', select: ['name']}, (err2, data2) => {
+            TypePqrs.populate(data, { path: '_id', select: ['name'] }, (err2, data2) => {
                 if (err2) {
                     res.status(200).send({ status: false, message: 'Error al popular las PQRS' });
                 } else {

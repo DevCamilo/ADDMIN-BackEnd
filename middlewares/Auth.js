@@ -8,7 +8,7 @@ function createToken(id) {
     const payload = {
         sub: id,
         iat: moment().unix(),
-        exp: moment().add(30, 'minutes').unix(),
+        exp: moment().add(60, 'minutes').unix(),
         secret: secret
     }
     return jwt.encode(payload, secret, 'HS256');

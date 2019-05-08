@@ -40,11 +40,11 @@ api.post('/update-user', Auth.isAuth, celebrate({
         name: Joi.string().required(),
         lastName: Joi.string().required(),
         telephone: Joi.string().required(),
-        tower: Joi.string().required(),
-        apto: Joi.string().required(),
-        typeUser: Joi.number().integer().required(),
-        email: Joi.string().email().required(),
-        password: Joi.string().required()
+        tower: Joi.string(),
+        apto: Joi.string(),
+        typeUser: Joi.number().integer(),
+        email: Joi.string().email(),
+        password: Joi.string()
     }).unknown()
 }), (err, req, res, next) => {
     if (err.details[0].path[0] == 'email') {
