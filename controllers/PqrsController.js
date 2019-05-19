@@ -43,7 +43,13 @@ function findPqrsByIdOrigin(req, res) {
         if (err) {
             res.status(200).send({ status: false, message: 'Error al buscar las PQRS' });
         } else {
-            res.status(200).send({ status: true, data: data });
+            UserModel.populate(data, { path: 'id_attendant', select: ['name', 'lastName'] }, (err2, data2) => {
+                if (err2) {
+                    res.status(200).send({ status: false, message: 'Error al popular el encargado' });
+                } else {
+                    res.status(200).send({ status: true, data: data2 });
+                }
+            });
         }
     });
 }
@@ -103,7 +109,7 @@ function updatePqrs(req, res) {
     const update = req.body;
     update.updated_at = new Date(moment().toISOString());
     update.checked = 'star_border';
-    PqrsModel.findByIdAndUpdate(update._id, update, (err, data) => {
+    PqrsModel.findByIdAndUpdate(update.id, update, (err, data) => {
         if (err) {
             res.status(200).send({ status: false, message: 'Error al actualizar la PQRS' });
         } else {
@@ -161,7 +167,7 @@ function findTypePqrsById(req, res) {
 function updateTypePqrs(req, res) {
     const update = req.body;
     update.updated_at = new Date(moment().toISOString());
-    TypePqrsModel.findByIdAndUpdate(update._id, update, (err, data) => {
+    TypePqrsModel.findByIdAndUpdate(update.id, update, (err, data) => {
         if (err) {
             res.status(200).send({ status: false, message: 'Error al actualizar el tipo de PQRS' });
         } else {

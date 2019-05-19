@@ -1,6 +1,6 @@
 'use strict'
 const PqrsController = require('../controllers/PqrsController');
-const Auth = require('../middlewares/Auth');
+const Auth = require('../middleware/Auth');
 const { celebrate, Joi } = require('celebrate');
 const express = require('express');
 const api = express.Router();
@@ -30,7 +30,7 @@ api.get('/list-pqrs-id', Auth.isAuth, celebrate({
 
 api.get('/list-pqrs-id-origin/:id?', Auth.isAuth, celebrate({
     query: Joi.object({
-        id: Joi.number().required()
+        id: Joi.string().required()
     }).unknown()
 }), (err, req, res, next) => {
     res.status(200).send({ status: false, message: 'Faltan datos por enviar' });
@@ -38,7 +38,7 @@ api.get('/list-pqrs-id-origin/:id?', Auth.isAuth, celebrate({
 
 api.get('/list-pqrs-id-attendant', Auth.isAuth, celebrate({
     query: Joi.object({
-        id: Joi.number().required()
+        id: Joi.string().required()
     }).unknown()
 }), (err, req, res, next) => {
     res.status(200).send({ status: false, message: 'Faltan datos por enviar' });
@@ -48,6 +48,7 @@ api.get('/group-pqrs-by-type', Auth.isAuth, PqrsController.groupPqrsByType);
 
 api.post('/update-respone-pqrs', Auth.isAuth, celebrate({
     body: Joi.object().keys({
+        id: Joi.string().required(),
         response: Joi.string().required(),
         id_attendant: Joi.string().required(),
     }).unknown()
@@ -88,6 +89,7 @@ api.get('/list-type-pqrs-id', Auth.isAuth, celebrate({
 
 api.post('/update-type-pqrs', Auth.isAuth, celebrate({
     body: Joi.object().keys({
+        id: Joi.string().required(),
         name: Joi.string(),
         description: Joi.string()
     }).unknown()

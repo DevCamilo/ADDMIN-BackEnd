@@ -2,7 +2,7 @@
 
 const UserModel = require('../models/UserModel');
 const moment = require('moment');
-const token = require('../middlewares/Auth');
+const token = require('../middleware/Auth');
 
 function createUser(req, res) {
     const query = req.body;

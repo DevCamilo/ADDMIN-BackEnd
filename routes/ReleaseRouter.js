@@ -4,7 +4,7 @@ const express = require('express');
 const api = express.Router();
 const ReleaseController = require('../controllers/ReleaseController');
 const { celebrate, Joi } = require('celebrate');
-const Auth = require('../middlewares/Auth');
+const Auth = require('../middleware/Auth');
 
 api.post('/create-release', Auth.isAuth, celebrate({
     body: Joi.object().keys({

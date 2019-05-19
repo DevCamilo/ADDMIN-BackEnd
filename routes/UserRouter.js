@@ -1,7 +1,7 @@
 'use strict'
 
 const UserController = require('../controllers/UserController');
-const Auth = require('../middlewares/Auth');
+const Auth = require('../middleware/Auth');
 const { celebrate, Joi } = require('celebrate');
 const express = require('express');
 const api = express.Router();
@@ -37,6 +37,7 @@ api.get('/user-all', Auth.isAuth, UserController.findAllUsers);
 
 api.post('/update-user', Auth.isAuth, celebrate({
     body: Joi.object().keys({
+        id: Joi.string().required(),
         name: Joi.string().required(),
         lastName: Joi.string().required(),
         telephone: Joi.string().required(),
