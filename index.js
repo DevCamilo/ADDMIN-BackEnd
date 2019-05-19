@@ -16,9 +16,9 @@ const StatsRoutes = require('./routes/StatsRouter');
 const EmailRoutes = require('./routes/EmailRouter');
 // Conexión base de datos
 // En mongoLab
-mongoose.connect(`mongodb://${DB.user}:${DB.password}@${DB.hostMLab}:${DB.portMLab}/${DB.databaseMLab}`, { useNewUrlParser: true }, (err, con) => {
+// mongoose.connect(`mongodb://${DB.user}:${DB.password}@${DB.hostMLab}:${DB.portMLab}/${DB.databaseMLab}`, { useNewUrlParser: true }, (err, con) => {
 // Local
-// mongoose.connect(`mongodb://${DB.host}:${DB.port}/${DB.database}`, { useNewUrlParser: true }, (err, con) => {
+mongoose.connect(`mongodb://${DB.host}:${DB.port}/${DB.database}`, { useNewUrlParser: true }, (err, con) => {
     if (err) {
         console.log('Error en la conexion');
     } else {
@@ -36,6 +36,6 @@ app.use(ReleaseRoutes);
 app.use(StatsRoutes);
 app.use(EmailRoutes);
 // Se inicia el servidor
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
     console.log("Server Corriendo");
 });

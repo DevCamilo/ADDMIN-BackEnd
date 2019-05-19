@@ -51,23 +51,13 @@ function findUserById(req, res) {
 function updateUser(req, res) {
     let update = req.body;
     update.updated_at = new Date(moment().toISOString());
-    // Verifica que el el correo no exista
-    /**UserModel.find({ email: update.email, status: true }, (err, data1) => {
-        if (data1.length > 0) {
-            res.status(200).send({ status: false, message: 'El correo ya existe' });
-        } else if (err) {
-            res.status(200).send({ status: false, message: 'Fallo al corroborar el correo' });
-        } else { */
-    // Actualizacion del usuario
-    UserModel.findByIdAndUpdate(update._id, update, (err, data) => {
+    UserModel.findByIdAndUpdate(update.id, update, (err, data) => {
         if (err) {
             res.status(200).send({ status: false, message: 'Fallo al actualizar el usuario' });
         } else {
             res.status(200).send({ status: true, message: 'Usuario actualizado exitosamente' });
         }
     });
-    // }
-    // });
 }
 
 function deleteUser(req, res) {
@@ -108,7 +98,7 @@ function login(req, res) {
     });
 }
 
-function changePassword(req, res){
+function changePassword(req, res) {
     const query = req.body;
     UserModel.findById(query._id, (err, data) => {
         if (err) {
@@ -123,7 +113,7 @@ function changePassword(req, res){
                     }
                 });
             } else {
-                res.status(200).send({ status: false, message: 'La contraseña es incorrecta'});
+                res.status(200).send({ status: false, message: 'La contraseña es incorrecta' });
             }
         }
     })

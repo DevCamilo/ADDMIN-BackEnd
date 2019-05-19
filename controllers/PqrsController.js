@@ -39,7 +39,7 @@ function findPqrsById(req, res) {
 
 function findPqrsByIdOrigin(req, res) {
     const query = req.query;
-    PqrsModel.find({ id_origin: mongoose.Types.ObjectId(query.id), status: true }, (err, data) => {
+    PqrsModel.find({ id_origin: mongoose.Types.ObjectId(query.id), status: true }).sort({'created_at': -1}).exec((err, data) => {
         if (err) {
             res.status(200).send({ status: false, message: 'Error al buscar las PQRS' });
         } else {
