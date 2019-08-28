@@ -14,8 +14,9 @@ const PqrsRoutes = require('./routes/PqrsRouter');
 const ReleaseRoutes = require('./routes/ReleaseRouter');
 const StatsRoutes = require('./routes/StatsRouter');
 const EmailRoutes = require('./routes/EmailRouter');
+const PaymentRoutes = require('./routes/PaymentRouter');
 // Conexión base de datos
-// En mongoLab
+// En mLab
 // mongoose.connect(`mongodb://${DB.user}:${DB.password}@${DB.hostMLab}:${DB.portMLab}/${DB.databaseMLab}`, { useNewUrlParser: true }, (err, con) => {
 // Local
 mongoose.connect(`mongodb://${DB.host}:${DB.port}/${DB.database}`, { useNewUrlParser: true }, (err, con) => {
@@ -35,6 +36,7 @@ app.use(PqrsRoutes);
 app.use(ReleaseRoutes);
 app.use(StatsRoutes);
 app.use(EmailRoutes);
+app.use(PaymentRoutes);
 // Se inicia el servidor
 app.listen(process.env.PORT || 3000, () => {
     console.log("Server Corriendo");

@@ -23,7 +23,7 @@ function countAllModels(req, res) {
                                     {
                                         name: 'Usuarios',
                                         count: data,
-                                        icon: 'groups'
+                                        icon: 'group'
                                     },
                                     {
                                         name: 'PQRS',

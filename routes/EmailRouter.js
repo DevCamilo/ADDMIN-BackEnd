@@ -6,7 +6,7 @@ const { celebrate, Joi } = require('celebrate');
 const auth = require('../middleware/Auth');
 const EmailController = require('../controllers/EmailController');
 
-api.post('/welcome-email', auth.isAuth, celebrate({
+api.post('/welcome-email', celebrate({
     body: Joi.object().keys({
         name: Joi.string().required(),
         lastName: Joi.string().required(),
