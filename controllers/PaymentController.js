@@ -1,64 +1,113 @@
 'use strict'
-const typePayment = require('../models/TypePaymentModel');
-const payment = require('../models/PaymentModel');
+const typePaymentModel = require('../models/TypePaymentModel');
+const paymentModel = require('../models/PaymentModel');
+const userModel = require('../models/UserModel');
+const mongoose = require('mongoose');
 const moment = require('moment');
 
 // Inicio API's de pagos
 
 function createPayment(req, res) {
     const body = req.body;
-    payment.create(body, (err, data) => {
+    paymentModel.create(body, (err, data) => {
         if (err) {
-            res.status(200).send({ status: false, message: "Fallo al crear el pago" });
+            res.status(200).send({ status: false, message: 'Fallo al crear el pago' });
         } else {
-            res.status(200).send({ status: true, message: "Pago creado exitósamente" });
+            res.status(200).send({ status: true, message: 'Pago creado exitósamente' });
         }
     });
 }
 
 function findAllPayment(req, res) {
-    payment.find({ status: true }, (err, data) => {
+    paymentModel.find({ status: true }, (err, data) => {
         if (err) {
-            res.status(200).send({ status: false, message: "Fallo al listar los pagos" });
+            res.status(200).send({ status: false, message: 'Fallo al listar los pagos' });
         } else {
-            res.status(200).send({ status: true, data: data });
+            typePaymentModel.populate(data, { path: 'id_type_payment', select: ['name'] }, (err2, data2) => {
+                if (err2) {
+                    res.status(200).send({ status: false, message: 'Fallo al popular los tipos de pago' });
+                } else {
+                    userModel.populate(data2, { path: 'id_user', select: ['name', 'lastName'] }, (err3, data3) => {
+                        if (err3) {
+                            res.status(200).send({ status: false, message: 'Fallo al popular el usuario' });
+                        } else {
+                            res.status(200).send({ status: true, data: data3 });
+                        }
+                    });
+                }
+            });
         }
     });
 }
 
-function findPaymentById(req, res){
+function findPaymentById(req, res) {
     const query = req.query;
-    payment.findById(query.id, (err, data) => {
-        if(err){
-            res.status(200).send({ status: false, message: "Fallo al listar el pago" });
+    paymentModel.findById(query.id, (err, data) => {
+        if (err) {
+            res.status(200).send({ status: false, message: 'Fallo al listar los pagos' });
         } else {
-            res.status(200).send({ status: true, data: data });
+            typePaymentModel.populate(data, { path: 'id_type_payment', select: ['name'] }, (err2, data2) => {
+                if (err2) {
+                    res.status(200).send({ status: false, message: 'Fallo al popular los tipos de pago' });
+                } else {
+                    userModel.populate(data2, { path: 'id_user', select: ['name', 'lastName'] }, (err3, data3) => {
+                        if (err3) {
+                            res.status(200).send({ status: false, message: 'Fallo al popular el usuario' });
+                        } else {
+                            res.status(200).send({ status: true, data: data3 });
+                        }
+                    });
+                }
+            });
         }
-    })
+    });
 }
 
-function updatePayment(req, res){
+function findPaymentByUserId(req, res) {
+    const query = req.query;
+    paymentModel.find({ id_user: mongoose.Types.ObjectId(query.id) }, (err, data) => {
+        if (err) {
+            res.status(200).send({ status: false, message: 'Fallo al listar los pagos' });
+        } else {
+            typePaymentModel.populate(data, { path: 'id_type_payment', select: ['name'] }, (err2, data2) => {
+                if (err2) {
+                    res.status(200).send({ status: false, message: 'Fallo al popular los tipos de pago' });
+                } else {
+                    userModel.populate(data2, { path: 'id_user', select: ['name', 'lastName'] }, (err3, data3) => {
+                        if (err3) {
+                            res.status(200).send({ status: false, message: 'Fallo al popular el usuario' });
+                        } else {
+                            res.status(200).send({ status: true, data: data3 });
+                        }
+                    });
+                }
+            });
+        }
+    });
+}
+
+function updatePayment(req, res) {
     const update = req.body;
     update.updated_at = new Date(moment().toISOString());
-    payment.findByIdAndUpdate(update.id, update, (err, data) => {
-        if(err){
-            res.status(200).send({ status: false, message: "Fallo al actualizar el pago" });
+    paymentModel.findByIdAndUpdate(update.id, update, (err, data) => {
+        if (err) {
+            res.status(200).send({ status: false, message: 'Fallo al actualizar el pago' });
         } else {
-            res.status(200).send({ status: true, message: "Pago actualizado exitósamente" });
+            res.status(200).send({ status: true, message: 'Pago actualizado exitósamente' });
         }
     });
 }
 
-function deletePayment(req, res){
+function deletePayment(req, res) {
     const query = req.query;
-    payment.findByIdAndUpdate(query.id, {
+    paymentModel.findByIdAndUpdate(query.id, {
         status: false,
         updated_at: new Date(moment().toISOString())
     }, (err, data) => {
-        if(err){
-            res.status(200).send({ status: false, message: "Fallo al eliminar el pago" });
+        if (err) {
+            res.status(200).send({ status: false, message: 'Fallo al eliminar el pago' });
         } else {
-            res.status(200).send({ status: true, message: "Pago eliminado exitósamente" });
+            res.status(200).send({ status: true, message: 'Pago eliminado exitósamente' });
         }
     })
 }
@@ -67,19 +116,19 @@ function deletePayment(req, res){
 
 function createTypePayment(req, res) {
     const body = req.body;
-    typePayment.create(body, (err, data) => {
+    typePaymentModel.create(body, (err, data) => {
         if (err) {
-            res.status(200).send({ status: false, message: "Fallo al crear el tipo de pago" });
+            res.status(200).send({ status: false, message: 'Fallo al crear el tipo de pago' });
         } else {
-            res.status(200).send({ status: true, message: "Tipo de pago creado exitósamente" });
+            res.status(200).send({ status: true, message: 'Tipo de pago creado exitósamente' });
         }
     });
 }
 
 function findAllTypePayment(req, res) {
-    typePayment.find({ status: true }, (err, data) => {
+    typePaymentModel.find({ status: true }, (err, data) => {
         if (err) {
-            res.status(200).send({ status: false, message: "Fallo al listar los tipos de pagos" });
+            res.status(200).send({ status: false, message: 'Fallo al listar los tipos de pagos' });
         } else {
             res.status(200).send({ status: true, data: data });
         }
@@ -88,9 +137,9 @@ function findAllTypePayment(req, res) {
 
 function findTypePaymentById(req, res) {
     const query = req.query;
-    typePayment.findById(query.id, (err, data) => {
+    typePaymentModel.findById(query.id, (err, data) => {
         if (err) {
-            res.status(200).send({ status: false, message: "Fallo al busacar el tipo de pago" });
+            res.status(200).send({ status: false, message: 'Fallo al busacar el tipo de pago' });
         } else {
             res.status(200).send({ status: true, data: data });
         }
@@ -100,25 +149,25 @@ function findTypePaymentById(req, res) {
 function updateTypePayment(req, res) {
     const update = req.body;
     update.updated_at = new Date(moment().toISOString());
-    typePayment.findByIdAndUpdate(update.id, update, (err, data) => {
+    typePaymentModel.findByIdAndUpdate(update.id, update, (err, data) => {
         if (err) {
-            res.status(200).send({ status: false, message: "Fallo al actualizar el tipo de pago" });
+            res.status(200).send({ status: false, message: 'Fallo al actualizar el tipo de pago' });
         } else {
-            res.status(200).send({ status: true, message: "Tipo de pago actualizado exitósamente" });
+            res.status(200).send({ status: true, message: 'Tipo de pago actualizado exitósamente' });
         }
     });
 }
 
 function deleteTypePayment(req, res) {
     const query = req.query;
-    typePayment.findByIdAndUpdate(query.id, {
+    typePaymentModel.findByIdAndUpdate(query.id, {
         status: false,
         updated_at: new Date(moment().toISOString())
     }, (err, data) => {
         if (err) {
-            res.status(200).send({ status: false, message: "Fallo al eliminar el tipo de pago" });
+            res.status(200).send({ status: false, message: 'Fallo al eliminar el tipo de pago' });
         } else {
-            res.status(200).send({ status: true, message: "Tipo de pago eliminado exitósamente" });
+            res.status(200).send({ status: true, message: 'Tipo de pago eliminado exitósamente' });
         }
     });
 }
@@ -127,6 +176,7 @@ module.exports = {
     createPayment,
     findAllPayment,
     findPaymentById,
+    findPaymentByUserId,
     updatePayment,
     deletePayment,
     createTypePayment,

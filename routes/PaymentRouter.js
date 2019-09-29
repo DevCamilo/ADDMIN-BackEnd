@@ -29,6 +29,14 @@ api.get('/list-paymet-by-id/:id?', Auth.isAuth, celebrate({
     res.status(200).send({ status: false, message: 'Faltan datos por enviar' });
 }, PaymentController.findPaymentById);
 
+api.get('/list-payment-by-user-id', Auth.isAuth, celebrate({
+    query: Joi.object({
+        id: Joi.string().required()
+    }).unknown()
+}), (err, req, res, next) => {
+    res.status(200).send({ status: false, message: 'Faltan datos por enviar' });
+}, PaymentController.findPaymentByUserId);
+
 api.post('/update-payment', Auth.isAuth, celebrate({
     body: Joi.object().keys({
         id: Joi.string().required(),
