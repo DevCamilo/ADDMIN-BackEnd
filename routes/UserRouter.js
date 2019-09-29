@@ -37,7 +37,7 @@ api.get('/user-all', Auth.isAuth, UserController.findAllUsers);
 
 api.post('/update-user', Auth.isAuth, celebrate({
     body: Joi.object().keys({
-        id: Joi.string().required(),
+        _id: Joi.string().required(),
         name: Joi.string().required(),
         lastName: Joi.string().required(),
         telephone: Joi.string().required(),

@@ -51,7 +51,7 @@ function findUserById(req, res) {
 function updateUser(req, res) {
     let update = req.body;
     update.updated_at = new Date(moment().toISOString());
-    UserModel.findByIdAndUpdate(update.id, update, (err, data) => {
+    UserModel.findByIdAndUpdate(update._id, update, (err, data) => {
         if (err) {
             res.status(200).send({ status: false, message: 'Fallo al actualizar el usuario' });
         } else {
