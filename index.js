@@ -20,16 +20,16 @@ const PaymentRoutes = require('./routes/PaymentRouter');
 // mongoose.connect(`mongodb://${DB.user}:${DB.password}@${DB.hostMLab}:${DB.portMLab}/${DB.databaseMLab}`, { useNewUrlParser: true }, (err, con) => {
 // Local
 mongoose.connect(`mongodb://${DB.host}:${DB.port}/${DB.database}`, { useNewUrlParser: true }, (err, con) => {
-    if (err) {
-        console.log('Error en la conexion');
-    } else {
-        console.log('Conexion DB Exitosa');
-    }
+    err ? console.log({ message: 'Error en la conexion', err: err }) : console.log('Conexion DB Exitosa')
 });
 // Parsea el body del request en formato JSON
 app.use(bodyParser.json());
 // Resuelve el error por archivos de origen cruzados
 app.use(cors());
+// Respuesta del servidor
+app.get('/', (req, res) => {
+    res.status(200).send({ status: true, message: 'Servidor Corriendo' });
+});
 // Lista de rutas
 app.use(UserRoutes);
 app.use(PqrsRoutes);
@@ -37,6 +37,10 @@ app.use(ReleaseRoutes);
 app.use(StatsRoutes);
 app.use(EmailRoutes);
 app.use(PaymentRoutes);
+// Manejador de error 404   
+app.use((req, res) => {
+    res.status(200).send({ status: false, message: 'API no econtrada' });
+});
 // Se inicia el servidor
 app.listen(process.env.PORT || 3000, () => {
     console.log("Server Corriendo");

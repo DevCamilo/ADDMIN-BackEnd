@@ -39,7 +39,7 @@ api.get('/list-payment-by-user-id', Auth.isAuth, celebrate({
 
 api.post('/update-payment', Auth.isAuth, celebrate({
     body: Joi.object().keys({
-        id: Joi.string().required(),
+        _id: Joi.string().required(),
         id_user: Joi.string().required(),
         id_type_payment: Joi.string().required(),
         final_value: Joi.number().integer().required(),
@@ -52,10 +52,11 @@ api.post('/update-payment', Auth.isAuth, celebrate({
 
 api.get('/delete-payment', Auth.isAuth, celebrate({
     query: Joi.object({
-        id: Joi.number().required()
+        id: Joi.string().required()
     }).unknown()
 }), (err, req, res, next) => {
     res.status(200).send({ status: false, message: 'Faltan datos por enviar' });
+    console.log(err);
 }, PaymentController.deletePayment);
 
 // Inicio API's de tipo de pagos

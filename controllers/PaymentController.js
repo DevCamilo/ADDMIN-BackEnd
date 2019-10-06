@@ -89,7 +89,7 @@ function findPaymentByUserId(req, res) {
 function updatePayment(req, res) {
     const update = req.body;
     update.updated_at = new Date(moment().toISOString());
-    paymentModel.findByIdAndUpdate(update.id, update, (err, data) => {
+    paymentModel.findByIdAndUpdate(update._id, update, (err, data) => {
         if (err) {
             res.status(200).send({ status: false, message: 'Fallo al actualizar el pago' });
         } else {
