@@ -65,7 +65,7 @@ function findPaymentById(req, res) {
 
 function findPaymentByUserId(req, res) {
     const query = req.query;
-    paymentModel.find({ id_user: mongoose.Types.ObjectId(query.id) }, (err, data) => {
+    paymentModel.find({ id_user: mongoose.Types.ObjectId(query.id), status: true }, (err, data) => {
         if (err) {
             res.status(200).send({ status: false, message: 'Fallo al listar los pagos' });
         } else {

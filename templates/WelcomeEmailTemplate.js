@@ -202,20 +202,21 @@ function welcomTemplate(user){
                                 <tr>
                                     <td class="logo" style="text-align: center;">
                                         <h1><a href="#">ADDMIN</a></h1>
+                                        <img src="https://devcamilo.github.io/assets/icon2.png" height="100" alt="">
                                     </td>
                                 </tr>
                             </table>
                         </td>
                     </tr>
                     <tr>
-                        <td valign="middle" class="hero hero-2 bg_white" style="padding: 4em 0;">
+                        <td valign="middle" class="hero hero-2 bg_white">
                             <table>
                                 <tr>
                                     <td>
                                         <div class="text" style="padding: 0 3em; text-align: center;">
                                             <h2>Bienvenido <span>${user.name} ${user.lastName}</span> a nuestro sistema de control
-                                            de conjuntos recidenciales <b> ADDMIN </b> esperamos que puedas optimizar muchos de 
-                                            los tramites con nuestro servicio</h2>
+                                            de conjuntos residenciales <b> ADDMIN </b> esperamos que puedas optimizar muchos de 
+                                            los tramites con nuestro servicio.</h2>
                                         </div>
                                     </td>
                                 </tr>
