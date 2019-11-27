@@ -13,6 +13,7 @@ const ReleaseRoutes = require('./routes/ReleaseRouter');
 const StatsRoutes = require('./routes/StatsRouter');
 const EmailRoutes = require('./routes/EmailRouter');
 const PaymentRoutes = require('./routes/PaymentRouter');
+const ReservationRoutes = require('./routes/ReservationRouter');
 // Conexión base de datos
 // En mLab
 // mongoose.connect(`mongodb://${DB.user}:${DB.password}@${DB.hostMLab}:${DB.portMLab}/${DB.databaseMLab}`, { useNewUrlParser: true }, (err, con) => {
@@ -35,6 +36,7 @@ app.use(ReleaseRoutes);
 app.use(StatsRoutes);
 app.use(EmailRoutes);
 app.use(PaymentRoutes);
+app.use(ReservationRoutes);
 // Manejador de error 404   
 app.use((req, res) => {
     res.status(200).send({ status: false, message: 'API no econtrada' });
